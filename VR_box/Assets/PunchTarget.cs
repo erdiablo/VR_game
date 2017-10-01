@@ -26,8 +26,7 @@ public class PunchTarget : MonoBehaviour{
         rBody.MovePosition(head.transform.position);
         rBody.MoveRotation(head.transform.rotation);
         PlayerPoseHead.Add(transform.position);
-        Debug.Log(PlayerPoseHead[counter_frame]);
-        Debug.Log(transform.position);
+
  
        
     }
@@ -41,7 +40,7 @@ public class PunchTarget : MonoBehaviour{
         else
         {
             aimIK.solver.transform.LookAt(pin.position);
-            aimIK.solver.IKPosition = PlayerPoseHead[counter_frame-59];
+            aimIK.solver.IKPosition = PlayerPoseHead[counter_frame-20];
         }
         counter_frame += 1;
 

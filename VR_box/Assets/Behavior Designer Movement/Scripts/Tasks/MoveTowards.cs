@@ -21,19 +21,60 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
         public SharedGameObject target;
         [Tooltip("If target is null then use the target position")]
         public SharedVector3 targetPosition;
-
+        Quaternion a, b;
+        Vector3 a1, b1;
+        private Animator anim;
+        public float Velosity;
         public override TaskStatus OnUpdate()
         {
+            anim = GetComponent<Animator>();
             var position = Target();
             // Return a task status of success once we've reached the target
             if (Vector3.Magnitude(transform.position - position) < arriveDistance.Value) {
                 return TaskStatus.Success;
             }
-            // We haven't reached the target yet so keep moving towards it
-            transform.position = Vector3.MoveTowards(transform.position, position, speed.Value * Time.deltaTime);
-            if (lookAtTarget.Value && (position - transform.position).sqrMagnitude > 0.01f) {
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(position - transform.position), maxLookAtRotationDelta.Value);
+
+            if ((Vector3.Magnitude(transform.position - position)- arriveDistance.Value) > 2)
+            {
+                Velosity = 2;
+                speed = Velosity/2;
             }
+            if ((Vector3.Magnitude(transform.position - position) - arriveDistance.Value) <= 2)
+            {
+                Velosity = (Vector3.Magnitude(transform.position - position) - arriveDistance.Value ) ;
+                speed = Velosity/2;
+            }
+            if (Velosity < 0.1)
+            {
+                Velosity = 0;
+                speed = 0;
+            }
+
+            a = transform.rotation;
+
+            if (a == b)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, position, speed.Value * Time.deltaTime);
+                anim.SetFloat("VelX", Velosity);
+            }
+
+            b = a;
+            // We haven't reached the target yet so keep moving towards it
+            //
+            if (lookAtTarget.Value) {
+               transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(position - transform.position), maxLookAtRotationDelta.Value);
+                Vector3 napr = transform.position - target.Value.transform.position;
+                var distance = napr.magnitude;
+                var direction = napr / distance; // This is now the normalized direction.
+                Debug.Log("Direction");
+                Debug.Log(direction);
+                Debug.Log("Targer");
+                Debug.Log(transform.forward);
+
+                //anim.SetTrigger("WalkFor");
+                //    Debug.Log("anim");
+            }
+            
             return TaskStatus.Running;
         }
 
@@ -52,5 +93,11 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
             arriveDistance = 0.1f;
             lookAtTarget = true;
         }
+
+        public override void OnEnd()
+        {
+            anim = GetComponent<Animator>();
+     }
+
     }
 }
