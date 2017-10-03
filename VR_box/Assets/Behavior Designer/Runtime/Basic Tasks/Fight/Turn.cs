@@ -9,54 +9,30 @@ namespace BehaviorDesigner.Runtime.Tasks.Fight
 
     public class  Turn: Action
     {
-    [Tooltip("The speed of the agent")]
-    public SharedFloat speed;
-    [Tooltip("The agent has arrived when the magnitude is less than this value")]
-    public SharedFloat arriveDistance = 0.1f;
-    [Tooltip("Should the agent be looking at the target position?")]
-    public SharedBool lookAtTarget = true;
-    [Tooltip("Max rotation delta if lookAtTarget is enabled")]
-    public SharedFloat maxLookAtRotationDelta;
-    [Tooltip("The GameObject that the agent is moving towards")]
+
     public SharedGameObject target;
-    [Tooltip("If target is null then use the target position")]
-    public SharedVector3 targetPosition;
-    Quaternion a, b;
-    Vector3 a1, b1;
     private Animator anim;
 
     public override TaskStatus OnUpdate()
     {
         anim = GetComponent<Animator>();
-        var position = Target();
-
-        a = transform.rotation;
-        if (a==b)
-        {
-            return TaskStatus.Success;
-        }
-        b = a;
-        if (lookAtTarget.Value)
-        {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(position - transform.position), maxLookAtRotationDelta.Value);
-        }
+        var position = target.Value.transform.position;
+            Vector3 napr = transform.position - target.Value.transform.position;
+            var distance = napr.magnitude;
+        var direction = napr / distance;
+            if ((System.Math.Round(Mathf.Abs(direction.x), 1) == System.Math.Round(Mathf.Abs(transform.forward.x), 1)) &&
+                (System.Math.Round(Mathf.Abs(direction.y), 1) == System.Math.Round(Mathf.Abs(transform.forward.y), 1)) &&
+                (System.Math.Round(Mathf.Abs(direction.z), 1) == System.Math.Round(Mathf.Abs(transform.forward.z), 1)))
+            {
+                anim.SetFloat("VelY", 0);
+                return TaskStatus.Success;
+            }
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(position - transform.position), 1);
+        anim.SetFloat("VelX", 1);
+        anim.SetFloat("VelY", -1);
         return TaskStatus.Running;
-    }
 
-    private Vector3 Target()
-    {
-        if (target == null || target.Value == null)
-        {
-            return targetPosition.Value;
         }
-        return target.Value.transform.position;
-    }
 
-    // Reset the public variables
-    public override void OnReset()
-    {
-        arriveDistance = 0.1f;
-        lookAtTarget = true;
-    }
     }
 }
