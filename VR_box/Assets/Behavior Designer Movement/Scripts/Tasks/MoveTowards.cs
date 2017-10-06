@@ -41,7 +41,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
             }
             if ((Vector3.Magnitude(transform.position - position) - arriveDistance.Value) <= 2)
             {
-                Velosity = (Vector3.Magnitude(transform.position - position) - arriveDistance.Value ) ;
+                Velosity = (Vector3.Magnitude(transform.position - position) - arriveDistance.Value);
                 speed = Velosity/2;
             }
             if (Velosity < 0.1)
