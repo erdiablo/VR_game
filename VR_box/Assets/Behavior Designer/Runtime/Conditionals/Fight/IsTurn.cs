@@ -8,18 +8,24 @@ namespace BehaviorDesigner.Runtime.Tasks
     public class IsTurn : Conditional
     {
         public SharedGameObject target;
-
+        private Vector3 a;
         public override TaskStatus OnUpdate()
         {
-          
-            Vector3 napr = transform.position - target.Value.transform.position;
+            a = new Vector3(0, 1, 0);
+            var position = target.Value.transform.position;
+            Vector3 proec_target = Vector3.ProjectOnPlane(transform.position, a);
+            Vector3 proec_object = Vector3.ProjectOnPlane(target.Value.transform.position, a);
+            Vector3 forvard = Vector3.ProjectOnPlane(transform.forward, a);
+            Vector3 napr = proec_object - proec_target;
             var distance = napr.magnitude;
+
             var direction = napr / distance;
-
-
-            if ((System.Math.Round(Mathf.Abs(direction.x), 1) == System.Math.Round(Mathf.Abs(transform.forward.x), 1)) &&
-                (System.Math.Round(Mathf.Abs(direction.z), 1) == System.Math.Round(Mathf.Abs(transform.forward.z), 1)))
-                    return TaskStatus.Failure;
+            if ((direction - forvard).magnitude < 0.1)
+            {
+                return TaskStatus.Failure;
+            }
+          
+            
             return TaskStatus.Success;
 
 
