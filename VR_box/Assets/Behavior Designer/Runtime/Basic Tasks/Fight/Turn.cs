@@ -25,7 +25,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Fight
             Vector3 napr = proec_object - proec_target;
             var distance = napr.magnitude;
             var direction = napr / distance;
-            if ((direction - forvard).magnitude < 0.1)
+            if ((direction - forvard).magnitude < 0.3)
             {
                 return TaskStatus.Success;
             }

@@ -61,19 +61,9 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
             b = a;
             // We haven't reached the target yet so keep moving towards it
             //
-            //if (lookAtTarget.Value) {
-              //  transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(position - transform.position), maxLookAtRotationDelta.Value);
-              //  Vector3 napr = transform.position - target.Value.transform.position;
-              //  var distance = napr.magnitude;
-             //   var direction = napr / distance; // This is now the normalized direction.
-             //   Debug.Log("Direction");
-           //     Debug.Log(direction);
-             //   Debug.Log("Targer");
-            //    Debug.Log(transform.forward);
-
-                //anim.SetTrigger("WalkFor");
-                //    Debug.Log("anim");
-            //}
+            if (lookAtTarget.Value) {
+                 transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(position - transform.position), maxLookAtRotationDelta.Value);
+               }
             
             return TaskStatus.Running;
         }
