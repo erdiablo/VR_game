@@ -30,8 +30,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Fight
                 return TaskStatus.Success;
             }
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(position - transform.position), 1);
-            Debug.Log(direction);
-            Debug.Log((direction-forvard).magnitude);
+
 
             return TaskStatus.Running;
 

@@ -9,6 +9,8 @@ public class Movement : MonoBehaviour {
 
     public GameObject contoler_left;
     public GameObject contoler_right;
+    public SteamVR_TrackedObject right_hand_controller;
+    public SteamVR_TrackedObject left_hand_controller;
     private SteamVR_TrackedController contoler_left_script;
     private SteamVR_TrackedController contoler_right_script;
     float x1, y1, z1, x2, y2, z2;
@@ -16,6 +18,7 @@ public class Movement : MonoBehaviour {
 
     bool flag_left = false;
     bool flag_right = false;
+    bool check_right_hand = false;
     // Use this for initialization
     void Start () {
 
@@ -31,9 +34,10 @@ public class Movement : MonoBehaviour {
         bool check_left = contoler_left_script.padPressed;
         bool check_right = contoler_right_script.padPressed;
 
+
         if ((check_left == true) & (check_right == false))
         {
-            Debug.Log("true1");
+            //Debug.Log("true1");
             if (flag_left != false) 
             {
                 pos2_left = contoler_left.transform.localPosition;
@@ -48,7 +52,7 @@ public class Movement : MonoBehaviour {
 
         if ((check_left == false) & (check_right == true))
         {
-            Debug.Log("true2");
+           // Debug.Log("true2");
             if (flag_right != false)
             {
                 pos2_right = contoler_right.transform.localPosition;

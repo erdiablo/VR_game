@@ -21,7 +21,8 @@ public class PunchSound : MonoBehaviour
     Random random;
 
     List<AudioClip> punch_sound;
-    public GameObject bot;
+    public GameObject head;
+    public GameObject tors;
     private AudioSource source;
     private GameObject player;
 
@@ -42,9 +43,17 @@ public class PunchSound : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject == bot)
+        
+        if (other.gameObject == head)
         {
-            Debug.Log("HITEM");
+            Debug.Log("HIT_head");
+            int index = Random.Range(0, 7);
+            source.PlayOneShot(punch_sound[index], 1f);
+        }
+
+        if (other.gameObject == tors)
+        {
+            Debug.Log("HIT_tors");
             int index = Random.Range(0, 7);
             source.PlayOneShot(punch_sound[index], 1f);
         }

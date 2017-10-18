@@ -121,6 +121,7 @@ public class SteamVR_RenderModel : MonoBehaviour
 
 	private void OnDeviceConnected(int i, bool connected)
 	{
+       
 		if (i != (int)index)
 			return;
 
@@ -132,7 +133,8 @@ public class SteamVR_RenderModel : MonoBehaviour
 
 	public void UpdateModel()
 	{
-		var system = OpenVR.System;
+        
+        var system = OpenVR.System;
 		if (system == null)
 			return;
 
